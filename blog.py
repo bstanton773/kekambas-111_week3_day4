@@ -4,6 +4,7 @@ class Blog:
         self.posts = []
         self.current_user = None # attribute used to determine if there is a logged in user
 
+    # Method to sign a new user up
     def create_new_user(self):
         # Get user info from input
         username = input('Please enter a username: ')
@@ -20,6 +21,7 @@ class Blog:
             self.users.add(new_user)
             print(f"{new_user} has been created!")
 
+    # Method to log a user in
     def log_user_in(self):
         # Get User credentials via input
         username = input('What is your username? ')
@@ -35,6 +37,12 @@ class Blog:
         # If no users in our blog user set have that username/password, flash an invalid credentials message
         else:
             print("Username and/or password is incorrect.")
+
+    # Method to log a user out
+    def log_user_out(self):
+        # Change the current_user attribute on this instance to None
+        self.current_user = None
+        print("You have successfully logged out.")
 
 
 
@@ -92,10 +100,13 @@ def run_blog():
         # if the current user is not None aka a user is logged in
         else:
             # Print menu options for logged in user
-            print('Quit')
+            print('1. Log Out')
             to_do = input('Which option would you like to do? ')
-            if to_do == 'quit':
-                break
+            while to_do not in {'1'}:
+                to_do = input('Invalid Option. Please choose 1 ')
+            if to_do == '1':
+                # Log the user out via the log_user_out method
+                my_blog.log_user_out()
 
 
 # Invoke the run_blog function to actually run the blog
