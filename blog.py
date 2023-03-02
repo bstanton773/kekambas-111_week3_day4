@@ -89,6 +89,38 @@ class Blog:
         else:
             print(f"Post with an ID of {post_id} does not exist.") # 404 Not Found
 
+    # Method to edit a post by ID
+    def edit_post(self, post_id):
+        post = self.__get_post_from_id(post_id)
+        if post:
+            # Check that the user is logged in AND that the logged in user is the author of the post
+            if self.current_user is not None and self.current_user == post.author:
+                # Print the post so the user can view it before they edit
+                print(post)
+
+                # Ask for the new edited title or have them enter skip to keep
+                new_title = input('Please enter the new title or enter skip to keep the current title ')
+                # if they don't enter skip
+                if new_title != 'skip':
+                    # Set the title attribute to the new_title
+                    post.title = new_title
+                # Same process for the body as title
+                new_body = input('Please enter the new body of the post or enter skip to keep the current body ')
+                if new_body != 'skip':
+                    post.body = new_body
+
+                print(f"{post.title} has been updated!")
+
+            # Else if the user is logged in but NOT the author
+            elif self.current_user is not None and self.current_user != post.author:
+                print("You do not have permission to edit this post") # 403 Forbidden
+            # If user not logged in at all
+            else:
+                print("You must be logged in to perform this action") # 401 Unauthorized
+        else:
+            print(f"Post with an ID of {post_id} does not exist.") # 404 Not Found
+
+
 
 
 class User:
@@ -179,10 +211,10 @@ def run_blog():
         # if the current user is not None aka a user is logged in
         else:
             # Print menu options for logged in user
-            print('1. Log Out\n2. Create New Post\n3. View All Posts\n4. View Single Post')
+            print('1. Log Out\n2. Create New Post\n3. View All Posts\n4. View Single Post\n5.Edit A Post')
             to_do = input('Which option would you like to do? ')
-            while to_do not in {'1', '2', '3', '4'}:
-                to_do = input('Invalid Option. Please choose 1, 2, 3, 4 ')
+            while to_do not in {'1', '2', '3', '4', '5'}:
+                to_do = input('Invalid Option. Please choose 1, 2, 3, 4, 5 ')
             if to_do == '1':
                 # Log the user out via the log_user_out method
                 my_blog.log_user_out()
@@ -199,6 +231,14 @@ def run_blog():
                     post_id = input('Invalid ID. Must be an integer. Please enter the ID again: ')
                 # Call the view single post method with post_id as an argument
                 my_blog.view_post(int(post_id))
+            elif to_do == '5':
+                # Get the id of the post 
+                post_id = input('What is the id of the post you would like to edit? ')
+                # if the post_id is not a digit, continue to ask them to fix it
+                while not post_id.isdigit():
+                    post_id = input('Invalid ID. Must be an integer. Please enter the ID again: ')
+                # Call the edit post method with post_id as an argument
+                my_blog.edit_post(int(post_id))
 
 
 # Invoke the run_blog function to actually run the blog
