@@ -59,6 +59,18 @@ class Blog:
         else:
             print("You must be logged in to perform this action.") # 401 Unauthorized
 
+    # Method to view ALL posts
+    def view_posts(self):
+        # Check to see if there are any posts
+        if self.posts:
+            # Loop through all of the posts:
+            for post in self.posts:
+                # Display the post
+                print(post)
+        # If no posts
+        else:
+            print("There are currently no posts for this blog :(")
+
 
 
 class User:
@@ -119,12 +131,12 @@ def run_blog():
         # if there is no current user logged in
         if my_blog.current_user is None:
             # Print the menu options for logged out users
-            print("1. Sign Up\n2. Log In\n5. Quit")
+            print("1. Sign Up\n2. Log In\n3. View All Posts\n5. Quit")
             # Ask the user which option they would like to do
             to_do = input('Which option would you like to do? ')
             # Keep asking if user chooses an invalid option
-            while to_do not in {'1', '5', '2'}:
-                to_do = input('Invalid Option. Please choose 1, 2, or 5 ')
+            while to_do not in {'1', '5', '2', '3'}:
+                to_do = input('Invalid Option. Please choose 1, 2, 3 or 5 ')
             # if they choose 5, quit
             if to_do == '5':
                 print("Thanks for checking out the blog")
@@ -135,18 +147,24 @@ def run_blog():
             elif to_do == '2':
                 # Call the log user in method from the blog
                 my_blog.log_user_in()
+            elif to_do == '3':
+                # Call the view_posts method
+                my_blog.view_posts()
         # if the current user is not None aka a user is logged in
         else:
             # Print menu options for logged in user
-            print('1. Log Out\n2. Create New Post')
+            print('1. Log Out\n2. Create New Post\n3. View All Posts')
             to_do = input('Which option would you like to do? ')
-            while to_do not in {'1', '2'}:
-                to_do = input('Invalid Option. Please choose 1, 2 ')
+            while to_do not in {'1', '2', '3'}:
+                to_do = input('Invalid Option. Please choose 1, 2, 3 ')
             if to_do == '1':
                 # Log the user out via the log_user_out method
                 my_blog.log_user_out()
             elif to_do == '2':
                 my_blog.create_new_post()
+            elif to_do == '3':
+                # Call the view_posts method
+                my_blog.view_posts()
 
 
 # Invoke the run_blog function to actually run the blog
